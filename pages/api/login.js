@@ -1,4 +1,8 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import * as dotenv from 'dotenv';
+import jwt from 'jsonwebtoken';
+
+dotenv.config();
 
 const db = [
   {
@@ -8,7 +12,7 @@ const db = [
   },
 ];
 
-export default function handler(req, res) {
+export default function login(req, res) {
   const { username, password } = req.body;
   if (!username || !password) {
     return res.status(400).json({
@@ -24,5 +28,8 @@ export default function handler(req, res) {
       error: 'Credential not match any account',
     });
   }
-  return res.status(200).json(account);
+
+  const token = jwt.sign({ username }, process.env.TOKEN_SECRET, { expiresIn: '7d' });
+
+  return res.status(200).json({ token });
 }

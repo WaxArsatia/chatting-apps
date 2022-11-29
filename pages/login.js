@@ -1,3 +1,5 @@
+import cookie from 'cookie-cutter';
+
 function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,7 +23,7 @@ function Login() {
 
     if (response.ok) {
       const result = await response.json();
-      console.log(result);
+      cookie.set('jwt', result?.token);
     }
   };
   return (
