@@ -1,6 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import * as dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
+import Cookies from 'cookies';
 
 dotenv.config();
 
@@ -31,5 +32,14 @@ export default function login(req, res) {
 
   const token = jwt.sign({ username }, process.env.TOKEN_SECRET, { expiresIn: '7d' });
 
-  return res.status(200).json({ token });
+  const cookies = new Cookies(req, res);
+
+  cookies.set('token', token, {
+    httpOnly: true,
+    sameSite: true,
+  });
+
+  return res.status(200).json({
+    success: true,
+  });
 }

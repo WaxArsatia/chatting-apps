@@ -1,9 +1,10 @@
-import cookie from 'cookie-cutter';
+import { useRouter } from 'next/router';
 
 function Login() {
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const router = useRouter();
 
+  const HandleSubmit = async (event) => {
+    event.preventDefault();
     const endpoint = '/api/login';
 
     const data = {
@@ -22,14 +23,13 @@ function Login() {
     const response = await fetch(endpoint, options);
 
     if (response.ok) {
-      const result = await response.json();
-      cookie.set('jwt', result?.token);
+      await router.push('/');
     }
   };
   return (
     <div className="flex h-screen bg-blue-500">
       <div className="container w-full mx-auto my-auto bg-white rounded-md shadow-xl sm:w-3/5 md:w-1/2 lg:w-2/5 xl:w-4/12">
-        <form className="flex flex-col justify-center h-full px-16 py-16" onSubmit={handleSubmit}>
+        <form className="flex flex-col justify-center h-full px-16 py-16" onSubmit={HandleSubmit}>
           <div className="my-4">
             <span className="text-2xl text-gray-700">
               Sign In
